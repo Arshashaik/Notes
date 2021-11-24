@@ -1,0 +1,321 @@
+public ActionResult Index()
+        {
+            return View();
+        }
+        public ActionResult InsertStudentData()
+        {
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult InsertStudentData(StudentDTO newobj)
+        {
+
+            try
+            {
+                int result = blobj.InsertNewDataIntoStudent(newobj);
+                if (result == 1)
+                {
+                    return View("Sucess");
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+        }
+
+        public ActionResult InsertAdminData(AdminDTO newobj)
+        {
+
+            try
+            {
+                int result = blobj.InsertNewDataIntoAdmin(newobj);
+                if (result == 1)
+                {
+                    return View("Sucess");
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+        }
+
+        public ActionResult InsertBooksData(BookDTO newobj)
+        {
+
+            try
+            {
+                int result = blobj.InsertNewDataIntoBooks(newobj);
+                if (result == 1)
+                {
+                    return View("Sucess");
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+        }
+
+        public ActionResult InsertBooksTypeData(BookTypeDTO newobj)
+        {
+
+            try
+            {
+                int result = blobj.InsertNewDataIntoBookType(newobj);
+                if (result == 1)
+                {
+                    return View("Sucess");
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+        }
+
+        public ActionResult InsertIssueData(IssueDTO newobj)
+        {
+
+            try
+            {
+                int result = blobj.InsertNewDataIntoIssue(newobj);
+                if (result == 1)
+                {
+                    return View("Sucess");
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+        }
+
+        public ActionResult DeleteStudentData(StudentDTO newobj)
+        {
+
+            try
+            {
+                int result = blobj.DeleteDataFromStudent(newobj);
+                if (result == 1)
+                {
+                    return View("Sucess");
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+        }
+
+        public ActionResult DeleteBooksData(BookDTO newobj)
+        {
+
+            try
+            {
+                int result = blobj.DeleteDataFromBooks(newobj);
+                if (result == 1)
+                {
+                    return View("Sucess");
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+        }
+
+        public ActionResult DeleteBookTypeData(BookTypeDTO newobj)
+        {
+
+            try
+            {
+                int result = blobj.DeleteDataFromBookType(newobj);
+                if (result == 1)
+                {
+                    return View("Sucess");
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+        }
+
+        public ActionResult DeleteIssueData(IssueDTO newobj)
+        {
+
+            try
+            {
+                int result = blobj.DeleteDataFromIssue(newobj);
+                if (result == 1)
+                {
+                    return View("Sucess");
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+        }
+
+        public ActionResult AdminLogin()
+        {
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AdminLogin(AdminDTO newobj)
+        {
+
+            try
+            {
+                int result = blobj.AdminAuthenticate(newobj);
+                if (result == 1)
+                {
+                    return View("Sucess");
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+        }
+        public ActionResult UpdateAdminpassword(AdminDTO newobj)
+        {
+
+            try
+            {
+                int result = blobj.UpdateAdminPassword(newobj);
+                if (result == 1)
+                {
+                    return View("Sucess");
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+        }
+
+
+    }
+}
+
+
+
+----------------------------------------
+STUDENT storeProcedure
+
+	Mobile (-3) = len  > 10 or < 10
+	date (- 2) = age <15
+	Name or studentID (-1) = NOT NULL
+        Mobile or studentID (-4) = already existed
+----------------------------------------
+Admin
+
+	return -1--AdminID already exist
+	return -2 --AdminID and Password should not be null
+-----------------------------------------
+Books
+	return -1 booksid and bookname not null
+---------------------------------------------
+Booktype
+	return -1--type name or type of book already exited
+
+	return -2--typeof books or type name cannot not be null
+
+--------------------------------------------------------------
+
+
+Issues
+	return -1--bookid doesnot exit
+ 
+	return -2--student doesnot exists
+
+	return -3--studentid and bookid cannot be null
+--------------------------------------------------------------
+DEL Student
+	return -1--studentID dosenot exists to delete
+
+	return -2-- studentid cannot be null
+-----------------------------------------------------------
+
+DEL Book
+	return -1--BookID dosenot exists to delete
+
+	return -2-- Bookid cannot be null
+----------------------------------------------------------
+Del BookType
+	return -1--typeofbook dosenot exists to delete
+
+	return -2-- typeofbook cannot be null
+----------------------------------------------------------
+Del Issue
+return -1--IssuesID dosenot exists to delete
+
+return -2-- IssuesID cannot be null
+---------------------------------------------------------
+Admin password
+return -1--Admin old password is incorrect
+
+return -2--AdminID already exist
+
+return -3 --AdminID and Password should not be null
+------------------------------------------------------
+
+SELECT DATEADD(day, 14, '2017/08/25') AS DateAdd;
+string s = DateTime.Now.AddDays(2).ToString();
+
+----------------------------------------------------------------
+DECLARE @dob  datetime
+SET @dob='1992-01-09'
+
+SELECT DATEDIFF(hour,@dob,GETDATE())/8766
+----------------------------------------------------------------

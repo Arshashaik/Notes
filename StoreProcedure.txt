@@ -1,0 +1,318 @@
+
+
+begin TRY
+IF @StudentId is not null and @name is not null
+begin
+Insert into Student(studentId,name,Mobile,DateofBirth,Class) values(@studentId,@name,@Mobile,@DateofBirth,@Class)
+END
+
+else
+begin
+return -1
+end
+
+END TRY
+
+begin catch
+return 999
+end catch
+
+
+
+
+**********************************************************************************************
+
+create proc usp_InsertIntoAdmin (@AdminId nvarchar(30),@AdminPassword nvarchar(30))
+AS
+
+begin TRY
+
+IF @AdminId is not null and @AdminPassword is not null
+begin
+if @AdminId not in (select AdminID from admin) 
+begin
+Insert into Admin(AdminId,AdminPassword) values(@AdminId,@AdminPassword)
+return 1
+end
+else
+begin
+return -1--AdminID already exist
+end
+END
+else
+begin
+return -2 --AdminID and Password should not be null
+end
+
+END TRY
+
+begin catch
+return 999
+end catch
+
+
+*****************************************************************************************
+
+create proc usp_InsertIntoBooks (
+@BookId nvarchar(30),
+@Bookname nvarchar(30),
+@author nvarchar(50),
+@type int
+)
+AS
+
+begin TRY
+
+IF @BookId is not null and @Bookname is not null
+begin
+Insert into Books(BookId,BookName,Author,typeofbook) values(@BookId,@Bookname,@author,@type)
+return 1
+
+END
+
+else
+begin
+return -1
+end
+
+END TRY
+
+begin catch
+return 999
+end catch
+
+
+*************************************************************************************************
+
+create proc usp_InsertIntoBookType (
+@typeofbook int,
+@typename nvarchar(50)
+)
+AS
+
+begin TRY
+
+IF @typeofbook is not null and @typename is not null
+begin
+if @typename not in (select typename from BookType) 
+begin
+if  @typeofbook not in (select typeofbook from BookType)
+begin
+Insert into BookType(typeofbook,typename) values(@typeofbook,@typename)
+return 1
+end
+else 
+begin
+return -2 --type of book already exited
+end
+end
+else
+begin
+return -1--type name already exited
+end
+END
+
+else
+begin
+return -3--typeof books or type name cannot not be null
+end
+
+END TRY
+
+begin catch
+return 999
+end catch
+
+
+************************************************************************************
+
+
+create proc usp_InsertIntoIssue (
+@bookid nvarchar(50),
+@Studentid nvarchar(30),
+@issuedate Date,
+@returndate date
+)
+AS
+
+begin TRY
+
+IF @StudentId is not null and @bookid is not null
+begin
+if @studentid  in (select studentid from Student) 
+begin 
+if @bookid  in (select bookid from books)
+begin
+Insert into issue(bookid,studentid,issuedate,returndate) values(@bookid,@studentId,@issuedate,@returndate)
+return 1
+end
+else
+begin
+return -1--bookid doesnot exit
+end
+END
+else
+begin 
+return -2--student doesnot exists
+end
+end
+
+else
+begin
+return -3--studentid and bookid cannot be null
+end
+
+END TRY
+
+begin catch
+return 999
+end catch
+
+--------------------------------------------------------------------
+usp_DeleteStudent-StudentID
+usp_Delete_books- BookID
+usp_Delete_bookType-typeofbook
+usp_Delete_Issue-IssuesID
+
+usp_UpdatePassword --AdminID and AdminPassword
+--------------------------------------------------------------------
+create proc usp_DeleteStudent (@studentID nvarchar(50)) as
+begin TRY
+IF @StudentID is not null 
+begin
+if @studentID in (select studentID from student)
+begin
+delete from student where studentid=@studentID
+return 1
+end
+else
+begin
+return -1--studentID dosenot exists to delete
+end
+END
+
+else
+begin
+return -2-- studentid cannot be null
+end
+
+END TRY
+
+begin catch
+return 999
+end catch
+------------------------------------------------------------------------------
+create proc usp_Delete_books (@BookID nvarchar(30)) as
+begin TRY
+IF @BookID is not null 
+begin
+if @BookID in (select BookID from Books)
+begin
+delete from Books where Bookid=@BookID
+return 1
+end
+else
+begin
+return -1--BookID dosenot exists to delete
+end
+END
+
+else
+begin
+return -2-- Bookid cannot be null
+end
+
+END TRY
+
+begin catch
+return 999
+end catch
+-------------------------------------------------------------------------------------
+create proc usp_Delete_bookType (@typeofbook int) as
+begin TRY
+IF @typeofbook is not null 
+begin
+if @typeofbook in (select typeofbook from BookType)
+begin
+delete from Booktype where typeofbook=@typeofbook
+return 1
+end
+else
+begin
+return -1--typeofbook dosenot exists to delete
+end
+END
+
+else
+begin
+return -2-- typeofbook cannot be null
+end
+
+END TRY
+
+begin catch
+return 999
+end catch
+-------------------------------------------------------------------------------------
+create proc usp_Delete_Issue (@IssuesID int) as
+begin TRY
+IF @IssuesID is not null 
+begin
+if @IssuesID in (select issueID from issue)
+begin
+delete from issue where IssueID=@IssuesID
+return 1
+end
+else
+begin
+return -1--IssuesID dosenot exists to delete
+end
+END
+
+else
+begin
+return -2-- IssuesID cannot be null
+end
+
+END TRY
+
+begin catch
+return 999
+end catch
+-------------------------------------------------------------------------------------
+create proc usp_UpdatePassword (@AdminId nvarchar(30),@AdminOldPassword nvarchar(30),@AdminNewPassword nvarchar(30))
+AS
+
+begin TRY
+
+IF @AdminId is not null and @AdminOldPassword is not null and @AdminNewPassword is not null 
+begin
+if @AdminId in (select AdminID from admin) 
+begin
+if @AdminOldPassword in (select adminpassword from admin where adminid=@AdminId)
+begin
+UPDATE Admin SET adminpassword = @AdminNewPassword WHERE adminid=@AdminId
+
+return 1
+end
+else
+begin
+return -1--Admin old password is incorrect
+end
+end
+else
+begin
+return -2--AdminID already exist
+end
+END
+else
+begin
+return -3 --AdminID and Password should not be null
+end
+
+END TRY
+
+begin catch
+return 999
+end catch
+-------------------------------------------------------------------------------------
